@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "347503562909",
+    "project_id": "istreamo-fcb02",
+    "storage_bucket": "istreamo-fcb02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347503562909:android:1491acbba68eb9bb360474",
+        "android_client_info": {
+          "package_name": "com.example.i_streamo_github"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347503562909-iktug50mdad06eig19ph3h7mt98phpgd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.i_streamo_github",
+            "certificate_hash": "5c54eea0cad841cc49d52e786494ad699cdf2a89"
+          }
+        },
+        {
+          "client_id": "347503562909-ot62cf4r59hhf89op870l1u2dl509euh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvJvqicz2g9pgp_CkgGTklSaJQDv_EtoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347503562909-ot62cf4r59hhf89op870l1u2dl509euh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
