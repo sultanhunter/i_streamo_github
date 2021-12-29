@@ -34,15 +34,21 @@ class GithubRepository {
     final previousHeaders = await _githubHeadersCache.getHeaders(requestUri);
     try {
       final response = await _client.getUri(requestUri,
-          options: Options(headers: {
-            'Accept': accept,
-            'If-None-Match': previousHeaders?.etag ?? '',
-          }));
+          options: Options(
+            headers: {
+              'Accept': accept,
+              'If-None-Match': previousHeaders?.etag ?? '',
+            },
+            validateStatus: (status) =>
+                status != null && status >= 200 && status < 400,
+          ));
       if (response.statusCode == 304) {
+        print('304');
         final _maxPage = previousHeaders?.paginationLink?.maxPage ?? 0;
         final _repos = await _githubLocalService.getPage(page);
         _completer.complete(right(Fresh(_repos, true, _maxPage > page)));
       } else if (response.statusCode == 200) {
+        print('200');
         final headers = GithubHeaders.parse(response);
         final _maxPage = headers.paginationLink?.maxPage ?? 1;
         await _githubHeadersCache.saveHeaders(requestUri, headers);
@@ -50,12 +56,13 @@ class GithubRepository {
         final _convertedData = (response.data as List<dynamic>)
             .map((e) => GithubRepo.fromMap(e as Map<String, dynamic>))
             .toList();
-
+        await _githubLocalService.upsertPage(_convertedData, page);
         _completer
             .complete(right(Fresh(_convertedData, true, _maxPage > page)));
       }
     } on DioError catch (e) {
       if (e.isNoConnectionError) {
+        print('no internt');
         final _repos = await _githubLocalService.getPage(page);
         final _maxPage = previousHeaders?.paginationLink?.maxPage ?? 0;
         _completer.complete(right(Fresh(_repos, false, _maxPage > page)));

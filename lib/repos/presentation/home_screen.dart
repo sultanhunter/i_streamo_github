@@ -20,30 +20,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(child: BlocBuilder<GithubReposCubit, GithubReposState>(
-          builder: (context, state) {
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            if (state is GithubReposNewDataReceived) {
-              return RepoTile(githubRepo: state.repos[index]);
-            } else if (state is GithubReposLoading) {
-              return SizedBox();
-            } else if (state is GithubReposError) {
-              return SizedBox();
-            } else {
-              return SizedBox();
-            }
-          },
-          itemCount: state is GithubReposNewDataReceived
-              ? state.repos.length
-              : state is GithubReposLoading
-                  ? state.repos.length + state.itemsPerPage
-                  : state is GithubReposError
-                      ? state.repos.length
-                      : 0,
-        );
-      })),
+    return BlocListener<GithubReposCubit, GithubReposState>(
+      listener: (context, state) {
+        if (state is GithubReposNewDataReceived) {
+          print('data received');
+        } else if (state is GithubReposLoading) {
+          print('loading');
+        } else if (state is GithubReposError) {
+          print(state.errorMessage);
+        } else {
+          print('some');
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(child: BlocBuilder<GithubReposCubit, GithubReposState>(
+            builder: (context, state) {
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              if (state is GithubReposNewDataReceived) {
+                return RepoTile(githubRepo: state.repos[index]);
+              } else if (state is GithubReposLoading) {
+                return CircularProgressIndicator();
+              } else if (state is GithubReposError) {
+                return Container(height: 50, child: Text('error'));
+              } else {
+                return Text('some');
+              }
+            },
+            itemCount: state is GithubReposNewDataReceived
+                ? state.repos.length
+                : state is GithubReposLoading
+                    ? state.repos.length + state.itemsPerPage
+                    : state is GithubReposError
+                        ? state.repos.length
+                        : 0,
+          );
+        })),
+      ),
     );
   }
 }

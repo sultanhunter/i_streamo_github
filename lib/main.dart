@@ -13,9 +13,10 @@ import 'package:i_streamo_github/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Firebase.initializeApp().then((value) async {
-    await SembastDatabase.init();
-    runApp(const MyApp());
+  Firebase.initializeApp().then((_) {
+    SembastDatabase.init().then((_) {
+      runApp(const MyApp());
+    });
   });
 }
 
@@ -40,6 +41,9 @@ class _MyAppState extends State<MyApp> {
           create: (context) =>
               AuthenticationCubit(FirebaseAuthenticator(FirebaseAuth.instance)),
         ),
+        BlocProvider(
+          create: (context) => GithubReposCubit(GithubRepository()),
+        )
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),

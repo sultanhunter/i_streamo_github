@@ -17,6 +17,9 @@ class GithubReposCubit extends Cubit<GithubReposState> {
     if (state is GithubReposNewDataReceived) {
       final _currentState = state as GithubReposNewDataReceived;
       _previousRepos = _currentState.repos;
+    } else if (state is GithubReposError) {
+      final _currentState = state as GithubReposError;
+      _previousRepos = _currentState.repos;
     } else {
       _previousRepos = [];
     }
@@ -33,12 +36,8 @@ class GithubReposCubit extends Cubit<GithubReposState> {
       page++;
       final _isFresh = r.isFresh;
       final _isNextPageAvailable = r.isNextPageAvailable;
-      late final List<GithubRepo> _currentRepos;
-      if (state is GithubReposNewDataReceived) {
-        final _currentState = state as GithubReposNewDataReceived;
-        _currentRepos = _currentState.repos;
-      }
-      final List<GithubRepo> _totalRepos = [..._currentRepos, ...r.entity];
+
+      final List<GithubRepo> _totalRepos = [..._previousRepos, ...r.entity];
 
       emit(GithubReposNewDataReceived(
           isFresh: _isFresh,
