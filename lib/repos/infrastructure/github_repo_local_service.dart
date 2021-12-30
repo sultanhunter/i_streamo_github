@@ -35,4 +35,14 @@ class GithubLocalService {
 
     return records.map((e) => GithubRepo.fromMap(e.value)).toList();
   }
+
+  Future<int> getLocalPageCount() async {
+    final reposCount = await _store.count(SembastDatabase.instance);
+    final pageCount = (reposCount / PaginationConfig.itemsPerPage).ceil();
+    return pageCount;
+  }
+
+  Future<void> deleteAllRecords() async {
+    await _store.delete(SembastDatabase.instance);
+  }
 }

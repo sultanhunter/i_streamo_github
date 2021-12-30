@@ -6,20 +6,16 @@ import 'package:i_streamo_github/repos/domain/fresh.dart';
 import 'package:i_streamo_github/repos/domain/github_failure.dart';
 import 'package:i_streamo_github/repos/domain/github_headers.dart';
 import 'package:i_streamo_github/repos/domain/github_repo.dart';
+import 'package:i_streamo_github/repos/domain/user.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_headers_cache.dart';
-import 'package:i_streamo_github/repos/infrastructure/github_local_service.dart';
+import 'package:i_streamo_github/repos/infrastructure/github_repo_local_service.dart';
 import 'package:i_streamo_github/repos/infrastructure/pagination_config.dart';
 import 'package:i_streamo_github/repos/infrastructure/sembast_database.dart';
 import 'package:i_streamo_github/core/infrastructure/dio_extensions.dart';
 
 class GithubRepository {
-  late final GithubLocalService _githubLocalService;
-  late final GithubHeadersCache _githubHeadersCache;
-
-  GithubRepository() {
-    _githubHeadersCache = GithubHeadersCache();
-    _githubLocalService = GithubLocalService();
-  }
+  final GithubLocalService _githubLocalService = GithubLocalService();
+  final GithubHeadersCache _githubHeadersCache = GithubHeadersCache();
 
   final _client = Dio();
   Future<Either<GithubFailure, Fresh<List<GithubRepo>>>> getRepos(
@@ -27,7 +23,7 @@ class GithubRepository {
     final Completer<Either<GithubFailure, Fresh<List<GithubRepo>>>> _completer =
         Completer();
     const accept = 'application/vnd.github.v3.html+json';
-    final requestUri = Uri.https('api.github.com', '/users/JakeWharton/repos', {
+    final requestUri = Uri.https('api.github.com', '/users/felangel/repos', {
       'page': '$page',
       'per_page': PaginationConfig.itemsPerPage.toString(),
     });
@@ -53,9 +49,9 @@ class GithubRepository {
         final _maxPage = headers.paginationLink?.maxPage ?? 1;
         await _githubHeadersCache.saveHeaders(requestUri, headers);
 
-        final _convertedData = (response.data as List<dynamic>)
-            .map((e) => GithubRepo.fromMap(e as Map<String, dynamic>))
-            .toList();
+        final _convertedData = (response.data as List<dynamic>).map((e) {
+          return GithubRepo.fromApiData(e as Map<String, dynamic>);
+        }).toList();
         await _githubLocalService.upsertPage(_convertedData, page);
         _completer
             .complete(right(Fresh(_convertedData, true, _maxPage > page)));
@@ -63,13 +59,23 @@ class GithubRepository {
     } on DioError catch (e) {
       if (e.isNoConnectionError) {
         print('no internt');
-        final _repos = await _githubLocalService.getPage(page);
-        final _maxPage = previousHeaders?.paginationLink?.maxPage ?? 0;
-        _completer.complete(right(Fresh(_repos, false, _maxPage > page)));
+        final _localMaxPageCount =
+            await _githubLocalService.getLocalPageCount();
+        if (_localMaxPageCount >= page) {
+          final _repos = await _githubLocalService.getPage(page);
+          _completer
+              .complete(right(Fresh(_repos, false, _localMaxPageCount > page)));
+        } else {
+          _completer.complete(left(GithubFailureNoInternetAndNoCache()));
+        }
       } else {
-        return left(GithubFailureApi(errorMessage: e.message));
+        _completer.complete(left(GithubFailureApi(errorMessage: e.message)));
       }
     }
     return _completer.future;
+  }
+
+  Future<void> deleteAllUserData() async {
+    _githubLocalService.deleteAllRecords();
   }
 }

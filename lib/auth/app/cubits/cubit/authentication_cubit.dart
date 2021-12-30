@@ -5,18 +5,21 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:i_streamo_github/auth/domain/auth_failure.dart';
 import 'package:i_streamo_github/auth/infrastructure/firebase_authenticator.dart';
+import 'package:i_streamo_github/repos/app/cubit/github_repos_cubit.dart';
 
 part 'authentication_state.dart';
 
 ///
 class AuthenticationCubit extends Cubit<AuthenticationState> {
   final FirebaseAuthenticator _firebaseAuthenticator;
+  final GithubReposCubit _githubReposCubit;
 
   late StreamSubscription _streamSubscription;
 
   ///
   AuthenticationCubit(
     this._firebaseAuthenticator,
+    this._githubReposCubit,
   ) : super(AuthenticationInitial()) {
     _streamSubscription =
         FirebaseAuth.instance.authStateChanges().listen((user) async {
@@ -26,6 +29,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         print('auth state emitted');
       }
       if (user == null) {
+        _githubReposCubit.deleteAllUserData();
         print('user is null');
         emit(UnAuthenticated());
         print('unauth state is emitted');
@@ -72,6 +76,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(AuthenticationError(errorMessage: l.errorMessage));
       }
     }, (r) {});
+  }
+
+  Future<void> logOut() async {
+    _firebaseAuthenticator.logOut();
   }
 
   @override

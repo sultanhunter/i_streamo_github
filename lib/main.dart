@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:i_streamo_github/auth/app/cubits/cubit/authentication_cubit.dart';
 import 'package:i_streamo_github/auth/infrastructure/firebase_authenticator.dart';
 import 'package:i_streamo_github/core/presentation/splash_page.dart';
+import 'package:i_streamo_github/repos/app/cubit/github_repo_detail_cubit.dart';
 import 'package:i_streamo_github/repos/app/cubit/github_repos_cubit.dart';
-import 'package:i_streamo_github/repos/infrastructure/github_repository.dart';
+import 'package:i_streamo_github/repos/infrastructure/github_repo_details/github_repo_detail_repository.dart';
+import 'package:i_streamo_github/repos/infrastructure/github_repo_repository.dart';
 import 'package:i_streamo_github/repos/infrastructure/sembast_database.dart';
 import 'package:i_streamo_github/router.dart';
 
@@ -28,9 +30,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late final GithubReposCubit _githubReposCubit;
   @override
   void initState() {
     super.initState();
+    _githubReposCubit = GithubReposCubit(GithubRepository());
   }
 
   @override
@@ -38,19 +42,21 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-              AuthenticationCubit(FirebaseAuthenticator(FirebaseAuth.instance)),
+          create: (context) => AuthenticationCubit(
+              FirebaseAuthenticator(FirebaseAuth.instance), _githubReposCubit),
         ),
+        BlocProvider(create: (context) => _githubReposCubit),
         BlocProvider(
-          create: (context) => GithubReposCubit(GithubRepository()),
-        )
+          create: (context) =>
+              GithubRepoDetailCubit(GithubRepoDetailRepository()),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
         builder: () => MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
-              primarySwatch: Colors.green,
+              primarySwatch: Colors.teal,
             ),
             onGenerateRoute: CustomRouter().generateRoute,
             home: const SplashPage()),

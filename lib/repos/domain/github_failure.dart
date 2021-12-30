@@ -5,3 +5,5 @@ class GithubFailureApi extends GithubFailure {
 
   GithubFailureApi({this.errorMessage});
 }
+
+class GithubFailureNoInternetAndNoCache extends GithubFailure {}

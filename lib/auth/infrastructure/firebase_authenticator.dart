@@ -73,4 +73,8 @@ class FirebaseAuthenticator {
     }
     return _completer.future;
   }
+
+  Future<void> logOut() async {
+    _firebaseAuth.signOut();
+  }
 }

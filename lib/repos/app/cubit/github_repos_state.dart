@@ -32,11 +32,11 @@ class GithubReposNewDataReceived extends GithubReposState {
 }
 
 class GithubReposError extends GithubReposState {
-  final String? errorMessage;
+  final String errorMessage;
   final List<GithubRepo> repos;
 
   const GithubReposError({
-    this.errorMessage,
+    this.errorMessage = 'Something Went Wrong, Please Try Again',
     required this.repos,
   });
 }

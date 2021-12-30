@@ -10,7 +10,7 @@ class GithubHeaders {
     return GithubHeaders(
       etag: response.headers.map['ETag']!.elementAt(0),
       paginationLink: PaginationLink.parse(
-        response.headers.map['Link']![0].split(','),
+        response.headers.map['Link']?[0].split(',') ?? [],
         requestUrl: response.requestOptions.uri.toString(),
       ),
     );
@@ -51,7 +51,7 @@ class PaginationLink {
       r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)',
     ).stringMatch(value);
 
-    return int.parse(Uri.parse(uriString!).queryParameters['page']!);
+    return int.parse(Uri.parse(uriString!).queryParameters['page'] ?? '0');
   }
 
   Map<String, dynamic> toJson() {
