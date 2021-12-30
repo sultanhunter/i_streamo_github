@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:i_streamo_github/auth/presentation/otp_screen.dart';
 import 'package:i_streamo_github/auth/presentation/phone_login.dart';
-import 'package:i_streamo_github/auth/presentation/phone_login_screen.dart';
 import 'package:i_streamo_github/core/presentation/splash_page.dart';
 import 'package:i_streamo_github/repos/presentation/home_screen.dart';
 

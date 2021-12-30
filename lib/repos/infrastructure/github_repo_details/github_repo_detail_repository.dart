@@ -9,7 +9,6 @@ import 'package:i_streamo_github/repos/domain/github_headers.dart';
 import 'package:i_streamo_github/repos/domain/github_repo_detail.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_headers_cache.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_repo_details/github_repo_details_local_service.dart';
-import 'package:i_streamo_github/repos/infrastructure/github_repo_local_service.dart';
 
 class GithubRepoDetailRepository {
   final _client = Dio();

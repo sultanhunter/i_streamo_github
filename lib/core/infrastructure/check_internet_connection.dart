@@ -9,7 +9,7 @@ class CheckInternetConnection {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return true;
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       return false;
     }
     return false;

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:i_streamo_github/auth/app/cubits/cubit/authentication_cubit.dart';
 import 'package:i_streamo_github/repos/domain/github_failure.dart';
 import 'package:i_streamo_github/repos/domain/github_repo.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_repo_repository.dart';

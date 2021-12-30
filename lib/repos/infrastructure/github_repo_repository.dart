@@ -6,11 +6,9 @@ import 'package:i_streamo_github/repos/domain/fresh.dart';
 import 'package:i_streamo_github/repos/domain/github_failure.dart';
 import 'package:i_streamo_github/repos/domain/github_headers.dart';
 import 'package:i_streamo_github/repos/domain/github_repo.dart';
-import 'package:i_streamo_github/repos/domain/user.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_headers_cache.dart';
 import 'package:i_streamo_github/repos/infrastructure/github_repo_local_service.dart';
 import 'package:i_streamo_github/repos/infrastructure/pagination_config.dart';
-import 'package:i_streamo_github/repos/infrastructure/sembast_database.dart';
 import 'package:i_streamo_github/core/infrastructure/dio_extensions.dart';
 
 class GithubRepository {

@@ -20,7 +20,7 @@ class GithubRepoDetailCubit extends Cubit<GithubRepoDetailState> {
       if (l is GithubFailureApi) {
         emit(GithubRepoDetailError(errorMessage: l.errorMessage));
       } else {
-        emit(GithubRepoDetailError(
+        emit(const GithubRepoDetailError(
             errorMessage:
                 'Please Connect to Internet Once to get the Repository Data'));
       }

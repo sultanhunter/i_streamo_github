@@ -1,4 +1,3 @@
-import 'package:i_streamo_github/repos/domain/github_repo.dart';
 import 'package:i_streamo_github/repos/domain/github_repo_detail.dart';
 import 'package:i_streamo_github/repos/infrastructure/sembast_database.dart';
 import 'package:sembast/sembast.dart';

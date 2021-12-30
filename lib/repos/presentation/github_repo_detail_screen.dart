@@ -24,6 +24,7 @@ class _GithubRepoDetailsScreenState extends State<GithubRepoDetailsScreen> {
   @override
   void initState() {
     super.initState();
+
     context
         .read<GithubRepoDetailCubit>()
         .getRepoData(widget.githubRepo.fullName);

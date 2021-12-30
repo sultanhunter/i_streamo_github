@@ -7,7 +7,8 @@ import 'package:i_streamo_github/auth/domain/auth_failure.dart';
 
 ///
 class SecureCredentialsStroage {
-  final FlutterSecureStorage _flutterSecureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _flutterSecureStorage =
+      const FlutterSecureStorage();
   final String _key = '#@!Key_for_access';
 
   ///

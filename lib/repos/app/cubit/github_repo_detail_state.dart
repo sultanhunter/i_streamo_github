@@ -22,5 +22,5 @@ class GithubRepoDetailDataReceived extends GithubRepoDetailState {
 class GithubRepoDetailError extends GithubRepoDetailState {
   final String? errorMessage;
 
-  GithubRepoDetailError({this.errorMessage});
+  const GithubRepoDetailError({this.errorMessage});
 }

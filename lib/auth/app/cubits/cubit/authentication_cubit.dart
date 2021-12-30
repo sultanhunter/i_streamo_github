@@ -55,7 +55,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       if (l is AuthFailureNoInternet) {
         emit(AuthenticationError(errorMessage: l.errorMessage));
       } else {
-        emit(AuthenticationError());
+        emit(const AuthenticationError());
       }
     }, (r) {});
   }

@@ -123,7 +123,7 @@ class _PaginatedListView extends StatelessWidget {
               );
             }
           } else {
-            return Text('some');
+            return const Text('some');
           }
         },
         itemCount: state is GithubReposNewDataReceived

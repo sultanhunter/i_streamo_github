@@ -30,7 +30,7 @@ class AuthenticationSuccess extends AuthenticationState {
   final User user;
 
   ///
-  AuthenticationSuccess({
+  const AuthenticationSuccess({
     required this.user,
   });
   @override
@@ -48,7 +48,7 @@ class AuthenticationError extends AuthenticationState {
   final String? errorMessage;
 
   ///
-  AuthenticationError({this.errorMessage});
+  const AuthenticationError({this.errorMessage});
 }
 
 ///
@@ -57,5 +57,5 @@ class AuthenticationCheckingError extends AuthenticationState {
   final bool isBackgroundChecking;
 
   ///
-  AuthenticationCheckingError({this.isBackgroundChecking = false});
+  const AuthenticationCheckingError({this.isBackgroundChecking = false});
 }

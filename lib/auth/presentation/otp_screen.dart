@@ -103,9 +103,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   pinAnimationType: PinAnimationType.slide,
                   eachFieldWidth: 50,
                   animationDuration: const Duration(milliseconds: 50),
-                  onSubmit: (text) {
-                    ;
-                  },
+                  onSubmit: (text) {},
                 ),
               ),
               SizedBox(
